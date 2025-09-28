@@ -1,6 +1,6 @@
 import { ApiClient } from "../src/api/client.js";
 
-export async function testApi() {
+export async function testClient() {
   const client = new ApiClient();
 
   try {
@@ -19,3 +19,5 @@ export async function testApi() {
     console.error(err);
   }
 }
+
+await testClient()
