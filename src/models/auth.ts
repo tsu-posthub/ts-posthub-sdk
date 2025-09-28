@@ -12,7 +12,7 @@ export const LoginResponseSchema = z.object({
 
 export const RegisterRequestSchema = z.object({
     username: z.string().min(1).max(150).regex(/^[\w.@+-]+$/),
-    email: z.email().optional(),
+    email: z.email(),
     password: z.string().min(8).regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/),
 });
 

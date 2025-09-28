@@ -1,10 +1,12 @@
-﻿import { ApiClient } from "../src/api/client.js";
+import { ApiClient } from "../src/api/client.js";
 import { AuthApi } from "../src/api/auth.js";
+import { ProfileApi } from "../src/api/profile.js";
 
-export async function testAuth() {
+export async function testProfile() {
   const client = new ApiClient();
   const auth = new AuthApi(client);
-  
+  const profile = new ProfileApi(client);
+
   const demoUser = {
     username: "testuser",
     email: "test@example.com",
@@ -19,7 +21,7 @@ export async function testAuth() {
     });
     console.log("Register (tokens):", reg);
   } catch (err) {
-    console.error("Register error:", err);
+    console.warn("Register skipped or failed:", err);
   }
   
   let login: { access: string; refresh: string } | undefined;
@@ -29,25 +31,32 @@ export async function testAuth() {
       password: demoUser.password,
     });
     console.log("Login (tokens):", login);
-    
     client.setToken(login.access);
   } catch (err) {
     console.error("Login error:", err);
+    return;
   }
   
   try {
-    if (login?.refresh) {
-      const refreshed = await auth.refresh({ refresh: login.refresh });
-      console.log("Refresh (new access):", refreshed);
-      client.setToken(refreshed.access);
-    } else {
-      console.warn("Skip refresh: no refresh token from login");
-    }
+    const me = await profile.getProfile();
+    console.log("Profile:", me);
   } catch (err) {
-    console.error("Refresh error:", err);
+    console.error("Get profile error:", err);
   }
   
   try {
+    const updated = await profile.updateProfile({
+      username: demoUser.username,
+      email: demoUser.email,
+      first_name: "Test",
+      last_name: "User",
+    });
+    console.log("Updated profile:", updated);
+  } catch (err) {
+    console.error("Update profile error:", err);
+  }
+  
+  try { 
     if (login?.refresh) {
       await auth.logout({ refresh: login.refresh });
       console.log("Logout: OK");
@@ -59,4 +68,4 @@ export async function testAuth() {
   }
 }
 
-await testAuth()
+await testProfile()
