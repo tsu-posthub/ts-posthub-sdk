@@ -1,9 +1,18 @@
-import {testAuth} from "../tests/testAuth.js";
+import { ApiClient } from "./api/client.js";
+import { AuthApi } from "./api/auth.js";
 
-async function main() {
-    await testAuth();
+export class PostHubSDK {
+    private readonly client: ApiClient;
+
+    public auth: AuthApi;
+    // TODO: posts, profile, etc.
+
+    constructor(token?: string) {
+        this.client = new ApiClient(token);
+        this.auth = new AuthApi(this.client);
+    }
+
+    setToken(token: string) {
+        this.client.setToken(token);
+    }
 }
-
-main().catch((err) => {
-	console.error("Fatal error in main:", err);
-});
