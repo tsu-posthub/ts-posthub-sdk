@@ -3,13 +3,26 @@
 async function main() {
     const sdk = new PostHubSDK();
 
-    const login = await sdk.auth.login({
-        email: "test@example.com",
-        password: "Password1",
-    });
+    try {
+        const login = await sdk.auth.login({
+            email: "user@example.com",
+            password: "password123",
+        });
+        console.log("Tokens:", login);
+        sdk.setToken(login.access);
+        
+        const profile = await sdk.profile.getProfile();
+        console.log("Profile:", profile);
+        
+        const updatedProfile = await sdk.profile.updateProfile({
+            username: "newusername",
+            email: "newemail@example.com",
+        });
+        console.log("Updated profile:", updatedProfile);
 
-    console.log("Tokens:", login);
-    sdk.setToken(login.access);
+    } catch (err) {
+        console.error("Error:", err);
+    }
 }
 
-main().catch(console.error);
+await main();
