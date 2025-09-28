@@ -44,8 +44,6 @@ export class ApiClient {
     } catch (error: any) {
       if (error.response) {
         throw new Error(`${error.response.status} ${error.response.statusText}`);
-      } else if (error.request) {
-        throw new Error("No response received");
       } else {
         throw new Error(`${error.message}`);
       }
