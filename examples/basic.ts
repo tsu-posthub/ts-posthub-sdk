@@ -5,8 +5,8 @@ async function main() {
 
     try {
         const login = await sdk.auth.login({
-            email: "user@example.com",
-            password: "password123",
+            email: "test@example.com",
+            password: "Password1",
         });
         console.log("Tokens:", login);
         sdk.setToken(login.access);
@@ -15,10 +15,22 @@ async function main() {
         console.log("Profile:", profile);
         
         const updatedProfile = await sdk.profile.updateProfile({
-            username: "newusername",
-            email: "newemail@example.com",
+            username: "testuser",
+            email: "test@example.com",
         });
         console.log("Updated profile:", updatedProfile);
+
+        const posts = await sdk.posts.listPosts();
+        console.log("Posts:", posts);
+        
+        const newPost = await sdk.posts.createPost({
+            title: "Hello World",
+            text: "This is my first post!",
+        });
+        console.log("Created post:", newPost);
+        
+        await sdk.posts.likePost(newPost.id);
+        console.log("Post liked!");
 
     } catch (err) {
         console.error("Error:", err);
