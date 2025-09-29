@@ -2,11 +2,11 @@
   "name": "ts-posthub-sdk",
   "version": "1.0.0",
   "description": "TypeScript SDK для работы с PostHub API. Подходит для React (web) и Expo (mobile). Включает удобный REST API-клиент, типы и утилиты для аутентификации, управления пользователями, постами и лайками.",
-  "main": "index.js",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "start": "ts-node src/index.ts",
-    "dev": "ts-node src/index.ts",
+    "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,14 +16,22 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/tsu-posthub/ts-posthub-sdk/issues"
   },
   "homepage": "https://github.com/tsu-posthub/ts-posthub-sdk#readme",
   "devDependencies": {
+    "@types/mime-types": "^3.0.1",
     "@types/node": "^24.5.2",
+    "@types/node-fetch": "^2.6.13",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "axios": "^1.12.2",
+    "mime-types": "^3.0.1",
+    "node-fetch": "^3.3.2",
+    "zod": "^4.1.11"
   }
 }
