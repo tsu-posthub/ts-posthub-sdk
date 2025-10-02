@@ -31,6 +31,13 @@ export const PostDetailSchema = z.object({
     updated_at: z.string(),
 });
 
+export const PaginatedPostsResponseSchema = z.object({
+    count: z.number(),
+    next: z.url().nullable(),
+    previous: z.url().nullable(),
+    results: z.array(PostListItemSchema),
+});
+
 export const ImageTypeSchema = z.union([
     z.instanceof(File),
     z.object({
@@ -58,3 +65,4 @@ export type PostsListResponse = z.infer<typeof PostsListResponseSchema>;
 export type PostDetail = z.infer<typeof PostDetailSchema>;
 export type CreatePostRequest = z.infer<typeof CreatePostRequestSchema>;
 export type UpdatePostRequest = z.infer<typeof UpdatePostRequestSchema>;
+export type PaginatedPostsResponse = z.infer<typeof PaginatedPostsResponseSchema>;
