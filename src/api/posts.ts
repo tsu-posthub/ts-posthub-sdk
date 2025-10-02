@@ -1,21 +1,28 @@
 import { ApiClient } from "./client.js";
 import {
-    PostsListResponseSchema,
     PostDetailSchema,
     CreatePostRequestSchema,
     UpdatePostRequestSchema,
-    type PostsListResponse,
     type PostDetail,
     type CreatePostRequest,
     type UpdatePostRequest,
+    PaginatedPostsResponseSchema,
+    type PaginatedPostsResponse,
 } from "../models/post.js";
 
 export class PostsApi {
     constructor(private client: ApiClient) {}
     
-    async listPosts(): Promise<PostsListResponse> {
-        const response = await this.client.request("/posts/", { method: "GET" });
-        return PostsListResponseSchema.parse(response);
+    async listPosts(params?: { page?: number; page_size?: number }): Promise<PaginatedPostsResponse> {
+        const query: Record<string, string> = {};
+        if (params?.page !== undefined) query.page = String(params.page);
+        if (params?.page_size !== undefined) query.page_size = String(params.page_size);
+
+        const queryString = new URLSearchParams(query).toString();
+        const url = queryString ? `/posts/?${queryString}` : "/posts/";
+
+        const response = await this.client.request(url, { method: "GET" });
+        return PaginatedPostsResponseSchema.parse(response);
     }
     
     async getPost(id: number): Promise<PostDetail> {
